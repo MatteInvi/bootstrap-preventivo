@@ -11,6 +11,9 @@ const infoExtra = document.getElementById("text-area");
 const formPreventivo = document.getElementById("form-preventivo");
 const promoCodeUser = document.getElementById("promo-code");
 const promoCodeError = document.getElementById("promo-code-error");
+let selectWork = document.getElementById("work-type");
+
+
 
 // Prezzi orari per tipologia di lavoro
 const backendPrice = 20.50;
@@ -18,12 +21,24 @@ const frontendPrice = 15.30;
 const projectAnalysisPrice = 33.60;
 
 // Array Codici sconto applicabili
-const arrayCodici = ["YHDNU32", "JANIC63", "PWKCN25", "JANJC63", "POCIE24"];
+const arrayCodici = ["YHDNU32", "CODE", "PWKCN25", "JANJC63", "POCIE24"];
 
+
+// Oggetti da caricare nel tipo di lavoro
+const typeOfWorkArray = [
+    { value: "frontend", text: "Front End Development", },
+    { value: "backend", text: "Back End Development", },
+    { value: "analysis", text: "Project Analysis", },
+];
 
 // Importazione output prezzo finale
 const finalPriceElem = document.getElementById("final-price");
 
+// Ciclo for per caricamento oggetti in select
+for (let i = 0; i < typeOfWorkArray.length; i++) {
+    let newOption = new Option(typeOfWorkArray[i].text, typeOfWorkArray[i].value);
+    selectWork.append(newOption);
+}
 
 //Funzione al click su "calcola preventivo"
 
@@ -32,13 +47,13 @@ formPreventivo.addEventListener("submit", function (event) {
 
     // Lettura variabile al click
     let typeOfWork = document.getElementById("work-type");
-    
+
     // Controllo tipologia di lavoro
     if (typeOfWork.value === "backend") {
         prezzoParziale = backendPrice * orePreimp;
     } else if (typeOfWork.value === "frontend") {
         prezzoParziale = frontendPrice * orePreimp;
-    } else {
+    } else if (typeOfWork.value === "analysis") {
         prezzoParziale = projectAnalysisPrice * orePreimp;
     }
 
@@ -53,16 +68,15 @@ formPreventivo.addEventListener("submit", function (event) {
             prezzoFinale = prezzoParziale;
         }
 
-    // Iterazione per far apparire messaggio di errore in caso di codice errato      
-        if (promoCodeUser.value == "" || promoCodeUser.value == curCode){
-            promoCodeError.classList.add("d-none");
-        } else  {
-            promoCodeError.classList.remove("d-none")
-        }
-
-      
     }
     
+    // Iterazione per far apparire messaggio di errore in caso di codice errato  
+    if (arrayCodici.includes(promoCodeUser.value) || promoCodeUser.value == "") {
+        promoCodeError.classList.add("d-none");
+    } else {
+        promoCodeError.classList.remove("d-none")
+    }
+
     // Stampa risultato in pagina
     finalPriceElem.innerText = (`€ ${prezzoFinale.toFixed(2)}`)
 
