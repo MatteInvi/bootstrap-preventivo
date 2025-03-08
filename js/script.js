@@ -13,7 +13,8 @@ const promoCodeUser = document.getElementById("promo-code");
 const promoCodeError = document.getElementById("promo-code-error");
 let selectWork = document.getElementById("work-type");
 
-
+// Importazione output prezzo finale
+const finalPriceElem = document.getElementById("final-price");
 
 // Prezzi orari per tipologia di lavoro
 const backendPrice = 20.50;
@@ -23,7 +24,6 @@ const projectAnalysisPrice = 33.60;
 // Array Codici sconto applicabili
 const arrayCodici = ["YHDNU32", "CODE", "PWKCN25", "JANJC63", "POCIE24"];
 
-
 // Oggetti da caricare nel tipo di lavoro
 const typeOfWorkArray = [
     { value: "frontend", text: "Front End Development", },
@@ -31,8 +31,7 @@ const typeOfWorkArray = [
     { value: "analysis", text: "Project Analysis", },
 ];
 
-// Importazione output prezzo finale
-const finalPriceElem = document.getElementById("final-price");
+
 
 // Ciclo for per caricamento oggetti in select
 for (let i = 0; i < typeOfWorkArray.length; i++) {
@@ -58,23 +57,20 @@ formPreventivo.addEventListener("submit", function (event) {
     }
 
     // Esecuzione ciclo for per controllare la validità del codice promo
-    for (let i = 0; i < arrayCodici.length; i++) {
-        const curCode = arrayCodici[i];
-        const sconto = prezzoParziale * 25 / 100;
+    const sconto = prezzoParziale * 25 / 100;
 
-        if (promoCodeUser.value == curCode) {
-            prezzoFinale = prezzoParziale - sconto;
-        } else if (promoCodeUser.value == !curCode) {
-            prezzoFinale = prezzoParziale;
-        }
-
+    if (arrayCodici.includes(promoCodeUser.value.toUpperCase())) {
+        prezzoFinale = prezzoParziale - sconto;
+    } else {
+        prezzoFinale = prezzoParziale;
     }
-    
+
+
     // Iterazione per far apparire messaggio di errore in caso di codice errato  
-    if (arrayCodici.includes(promoCodeUser.value) || promoCodeUser.value == "") {
+    if (arrayCodici.includes(promoCodeUser.value.toUpperCase()) || promoCodeUser.value == "") {
         promoCodeError.classList.add("d-none");
     } else {
-        promoCodeError.classList.remove("d-none")
+        promoCodeError.classList.remove("d-none");
     }
 
     // Stampa risultato in pagina
