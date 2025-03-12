@@ -1,17 +1,17 @@
-// Variabili preimpostate
+// Variabili del prezzo preimpostato, prezzo prima dell'eventuale sconto e prezzo finale
 const orePreimp = 10;
 let prezzoParziale;
 let prezzoFinale;
 
 // Importazione input utente
-const name = document.getElementById("name");
-const surname = document.getElementById("surname");
-const email = document.getElementById("mail");
-const infoExtra = document.getElementById("text-area");
+const nameElem = document.getElementById("name");
+const surnameElem = document.getElementById("surname");
+const emailElem = document.getElementById("mail");
+const infoExtraElem = document.getElementById("text-area");
 const formPreventivo = document.getElementById("form-preventivo");
-const promoCodeUser = document.getElementById("promo-code");
-const promoCodeError = document.getElementById("promo-code-error");
-let selectWork = document.getElementById("work-type");
+const promoCodeUserElem = document.getElementById("promo-code");
+const promoCodeErrorElem = document.getElementById("promo-code-error");
+const typeOfWorkElem = document.getElementById("work-type");
 
 // Importazione output prezzo finale
 const finalPriceElem = document.getElementById("final-price");
@@ -31,46 +31,43 @@ const typeOfWorkArray = [
     { value: "analysis", text: "Project Analysis", },
 ];
 
-
-
 // Ciclo for per caricamento oggetti in select
 for (let i = 0; i < typeOfWorkArray.length; i++) {
     let newOption = new Option(typeOfWorkArray[i].text, typeOfWorkArray[i].value);
-    selectWork.append(newOption);
+    typeOfWorkElem.append(newOption);
 }
 
 //Funzione al click su "calcola preventivo"
-
 formPreventivo.addEventListener("submit", function (event) {
     event.preventDefault()
 
     // Lettura variabile al click
-    let typeOfWork = document.getElementById("work-type");
+    let typeOfWorkSelected = typeOfWorkElem;
 
     // Controllo tipologia di lavoro
-    if (typeOfWork.value === "backend") {
+    if (typeOfWorkSelected.value === "backend") {
         prezzoParziale = backendPrice * orePreimp;
-    } else if (typeOfWork.value === "frontend") {
+    } else if (typeOfWorkSelected.value === "frontend") {
         prezzoParziale = frontendPrice * orePreimp;
-    } else if (typeOfWork.value === "analysis") {
+    } else if (typeOfWorkSelected.value === "analysis") {
         prezzoParziale = projectAnalysisPrice * orePreimp;
     }
 
-    // Esecuzione ciclo for per controllare la validità del codice promo
+    //Calcolo sconto
     const sconto = prezzoParziale * 25 / 100;
 
-    if (arrayCodici.includes(promoCodeUser.value.toUpperCase())) {
+    // Iterazione per controllare la validità del codice promo
+    if (arrayCodici.includes(promoCodeUserElem.value.toUpperCase())) {
         prezzoFinale = prezzoParziale - sconto;
     } else {
         prezzoFinale = prezzoParziale;
     }
 
-
-    // Iterazione per far apparire messaggio di errore in caso di codice errato  
-    if (arrayCodici.includes(promoCodeUser.value.toUpperCase()) || promoCodeUser.value == "") {
-        promoCodeError.classList.add("d-none");
+    // Controllo codice promo per far apparire messaggio di errore in caso di codice errato  
+    if (arrayCodici.includes(promoCodeUserElem.value.toUpperCase()) || promoCodeUserElem.value == "") {
+        promoCodeErrorElem.classList.add("d-none");
     } else {
-        promoCodeError.classList.remove("d-none");
+        promoCodeErrorElem.classList.remove("d-none");
     }
 
     // Stampa risultato in pagina
