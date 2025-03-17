@@ -10,6 +10,7 @@ const emailElem = document.getElementById("mail");
 const infoExtraElem = document.getElementById("text-area");
 const formPreventivo = document.getElementById("form-preventivo");
 const promoCodeUserElem = document.getElementById("promo-code");
+const privacyCheckElem = document.getElementById("privacy-check");
 const promoCodeErrorElem = document.getElementById("promo-code-error");
 const typeOfWorkElem = document.getElementById("work-type");
 
